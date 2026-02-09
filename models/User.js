@@ -1,0 +1,54 @@
+import mongoose from "mongoose";
+
+const userSchema = new mongoose.Schema({
+    fullName: {
+        type: String,
+        required: true, // Now required on registration
+    },
+    businessName: {
+        type: String,
+        required: true, // Now required on registration
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+    },
+    mobile: {
+        type: String,
+        required: true, // Now required on registration
+        unique: true,
+        trim: true,
+    },
+    address: {
+        type: String,
+    },
+    password: {
+        type: String,
+        required: true, // Now required on registration
+    },
+    isApproved: {
+        type: Boolean,
+        default: false, // User still needs approval from 'superadmin'
+    },
+    avatar: {
+        type: String,
+        default: 'https://via.placeholder.com/150/f472b6/ffffff?text=U'
+    },
+    role: {
+        type: String,
+        // 'user' = Company Owner (Default registration)
+        // 'admin' = Employee (Invited by 'user')
+        // 'superadmin' = System Owner (Hardcoded creation)
+        enum: ['user', 'admin', 'superadmin'], 
+        default: 'user',
+    },
+    businessId: {
+        type: mongoose.Schema.Types.ObjectId,
+        sparse: true, 
+    }
+}, { timestamps: true });
+
+export default mongoose.model("User", userSchema);
